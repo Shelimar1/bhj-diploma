@@ -11,10 +11,10 @@ class Modal {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor(element){
+   constructor(element){
     if (!element) {
-      throw new Error("Невалидное значение для Modal");
-    }
+      throw new Error('Данный элемент не найден!');
+    };
     this.element = element;
     this.registerEvents();
   }
@@ -24,36 +24,33 @@ class Modal {
    * должен закрыть текущее окно
    * (с помощью метода Modal.onClose)
    * */
-  registerEvents() {
-    const elementBtns = this.element.getElementsByTagName('button');
-    for (let button of elementBtns) {
-      if (button.hasAttribute('data-dismiss') && button.dataset.dismiss === 'modal') {
-        button.addEventListener('click', (ev) => {
-          ev.preventDefault();
-          this.onClose(button);
-        });
-      }
-    }
+   registerEvents() {
+    this.onClose = this.onClose.bind(this);
+     const closeBtn = Array.from(this.element.querySelectorAll('button[data-dismiss="modal"]'));
+     for (let item of closeBtn) {
+       item.addEventListener('click', this.onClose);
+     };
   }
 
   /**
    * Срабатывает после нажатия на элементы, закрывающие окно.
    * Закрывает текущее окно (Modal.close())
    * */
-  onClose(e) {
-    e.onClick = this.close();
+   onClose(e) {
+    e.preventDefault();
+     this.close();
   }
   /**
    * Открывает окно: устанавливает CSS-свойство display
    * со значением «block»
    * */
-  open() {
+   open() {
     this.element.style.display = 'block';
   }
   /**
    * Закрывает окно: удаляет CSS-свойство display
    * */
-  close(){
-    this.element.removeAttribute('style');
+   close(){
+    this.element.style.display = '';
   }
 }

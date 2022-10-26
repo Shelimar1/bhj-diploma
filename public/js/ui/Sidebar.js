@@ -17,14 +17,15 @@ class Sidebar {
    * переключает два класса для body: sidebar-open и sidebar-collapse
    * при нажатии на кнопку .sidebar-toggle
    * */
-  static initToggleButton() {
-    const sidebarBtn = document.querySelector('a.sidebar-toggle');
-    sidebarBtn.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      const sidebarMini = document.querySelector('body.sidebar-mini');
-      sidebarMini.classList.toggle('sidebar-open');
-      sidebarMini.classList.toggle('sidebar-collapse'); //для совместимости с Fire-Fox
-    });
+   static initToggleButton() {
+    const main = document.querySelector('.sidebar-mini');
+    const toogleBtn = document.querySelector('.sidebar-toggle');
+
+    toogleBtn.addEventListener('click', e => {
+      e.preventDefault();
+      main.classList.toggle('sidebar-open');
+      main.classList.toggle('sidebar-collapse');
+    })
   }
 
   /**
@@ -34,25 +35,27 @@ class Sidebar {
    * При нажатии на кнопку выхода вызывает User.logout и по успешному
    * выходу устанавливает App.setState( 'init' )
    * */
-  static initAuthLinks() {
-    const sidebarCtrlBtns = document.querySelectorAll('.sidebar-menu');
-    sidebarCtrlBtns.forEach(button => {
-      button.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        switch (ev.target.closest('li').classList[1]) {
-          case 'menu-item_login':
-            App.getModal('login').open();
-          break;
-          case 'menu-item_register':
-            App.getModal('register').open();
-          break;
-          case 'menu-item_logout':
-            User.logout(response => 
-                App.setState('init')
-              );
-          break;
-        }
-      });
-    });
+   static initAuthLinks() {
+    const menyBtn = document.querySelector('.menu-item_login');
+     menyBtn.addEventListener('click', (e) => {
+       e.preventDefault();
+       App.getModal('login').open();
+     });
+
+     const menuRegister = document.querySelector('.menu-item_register');
+     menuRegister.addEventListener('click', (e) => {
+       e.preventDefault();
+       App.getModal('register').open();
+     });
+
+     const menuLogout = document.querySelector('.menu-item_logout');
+     menuLogout.addEventListener('click', (e) => {
+       e.preventDefault();
+       User.logout((err, response) => {
+         if (response && response.success) {
+           App.setState('init');
+         }
+       });   
+     });
   }
 }

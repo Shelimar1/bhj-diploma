@@ -8,13 +8,17 @@ class CreateAccountForm extends AsyncForm {
    * окно в случае успеха, а также вызывает App.update()
    * и сбрасывает форму
    * */
-  onSubmit(data) {
-    Account.create(data, (err, response) => {
-      if (response.success) {
-        document.forms['new-account-form'].reset();
+   onSubmit(data) {
+    const callback = (error) => {
+      if (error) {
+        handleError(error);
+      } else {
+        this.element.reset();
         App.getModal('createAccount').close();
-        App.update();
+        App.getWidget("accounts").update();
+        App.updateForms();
       }
-    });
+    }
+    Account.create(data, callback);
   }
 }

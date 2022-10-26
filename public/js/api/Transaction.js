@@ -3,7 +3,9 @@
  * Управляет счетами пользователя.
  * Имеет свойство URL со значением '/transaction'
  * */
-class Transaction extends Entity {
-    static URL = '/transaction';
-}
+ class Transaction extends Entity {
+    static get URL() {
+      return '/transaction';
+    }
+  }
 

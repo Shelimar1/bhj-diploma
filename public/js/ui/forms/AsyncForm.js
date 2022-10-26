@@ -38,14 +38,17 @@ class AsyncForm {
    *  'название поля формы 2': 'значение поля формы 2'
    * }
    * */
-  getData() {
-    const obj = {};
-    const formData = new FormData(this.element);
-    const entries = formData.entries();
-    for (const [key, value] of entries) {
-      obj[key] = value;
-    }
-    return obj;
+   getData() {
+    const formatDate = new FormData(this.element);
+       const formResult = {};
+       const entries = formatDate.entries();
+       for (let item of entries) {
+         const key = item[0],
+         value = item[1];
+         formResult[key] = value;
+       }
+
+       return formResult;
   }
 
   onSubmit(options){

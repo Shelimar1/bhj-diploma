@@ -11,10 +11,10 @@ class TransactionsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
+   constructor( element ) {
     if (!element) {
-      throw new Error("Невалидное значение для TransactionsWidget"); 
-    }
+      throw new Error('Данный элемент не найден!');
+    };
     this.element = element;
     this.registerEvents();
   }
@@ -24,20 +24,17 @@ class TransactionsWidget {
    * При нажатии вызывает Modal.open() для
    * экземпляра окна
    * */
-  registerEvents() {
-    const transactionBtns = document.querySelectorAll('.transactions-panel > button');
-    transactionBtns.forEach(button => {
-      button.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        switch (ev.target.closest('button').classList[3]) {
-          case 'create-income-button':
-            App.getModal('newIncome').open();
-          break;
-          case 'create-expense-button':
-            App.getModal('newExpense').open();
-          break;
-        }
-      });
-    });
+   registerEvents() {
+    const btnIncome = this.element.querySelector('.create-income-button');
+       btnIncome.addEventListener('click', (e) => {
+         e.preventDefault();
+         App.getModal('newIncome').open();
+       });
+       const btnExpense = this.element.querySelector('.create-expense-button');
+       btnExpense.addEventListener('click', (e) => {
+         e.preventDefault();
+         App.getModal('newExpense').open();
+       });
   }
 }
+
